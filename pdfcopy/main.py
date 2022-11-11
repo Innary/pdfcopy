@@ -4,7 +4,7 @@
 @ Author: Innary
 @ Date: 2022-11-11 11:29:23
 @ LastEditors: Innary
-@ LastEditTime: 2022-11-11 23:30:30
+@ LastEditTime: 2022-11-12 08:40:45
 '''
 
 import argparse
@@ -23,7 +23,7 @@ def spilt_sentence(text):
 
 
 def remove_empty_line(text, split=False):
-    source_content = text.replace('\r','\\').replace('\n','\\').replace('\\\\', ' ')
+    source_content = text.replace('\r','\\').replace('\n','\\').replace('\\\\', ' ').replace('\\', '')
     if split:
         source_content = spilt_sentence(source_content)
         
