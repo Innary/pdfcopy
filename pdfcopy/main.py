@@ -4,43 +4,43 @@
 @ Author: Innary
 @ Date: 2022-11-11 11:29:23
 @ LastEditors: Innary
-@ LastEditTime: 2022-11-11 14:56:37
+@ LastEditTime: 2022-11-11 23:30:30
 '''
 
 import argparse
 from time import sleep
 import pyperclip
- 
+import copy
 def get_args_parser():
     parser = argparse.ArgumentParser('PDF copy-paste', add_help=False)
-    parser.add_argument('--remove_r_only', '-r', action='store_true')
-    parser.add_argument('--remove_n_only', '-n', action='store_true')
+    parser.add_argument('--split', '-s', action='store_true')
     return parser
-def remove_empty_line(text, type=None):
-    if type == 'r':
-        source_content = text.replace('\r',' ').replace(' ', ' ')
-    elif type =='n':
-        source_content = text.replace('\n',' ').replace(' ', ' ')
-    else:
-        source_content = text.replace('\n',' ').replace('\r', ' ').replace('  ', ' ')
+
+
+def spilt_sentence(text):
+    source_content = text.replace('. ','. \n  ').replace('。','。\n  ')
     return source_content
+
+
+def remove_empty_line(text, split=False):
+    source_content = text.replace('\r','\\').replace('\n','\\').replace('\\\\', ' ')
+    if split:
+        source_content = spilt_sentence(source_content)
+        
+    return source_content
+
 
 def main():
     parser = get_args_parser()
     args = parser.parse_args()
-    type = None
-    if args.remove_r_only:
-        type = 'r'
-    elif args.remove_n_only:
-        type = 'n'
-    elif args.remove_r_only and args.remove_n_only:
-        raise ValueError
+    cache = remove_empty_line(pyperclip.paste(), args.split)
     while True:
         sleep(0.5)
-        Content=remove_empty_line(pyperclip.paste(), type)
-        if Content != pyperclip.paste():
-            pyperclip.copy(Content)
-            print("now clipboard content:",Content[0:3],"~~~~~",Content[-2:])
+        if cache != pyperclip.paste():
+            content=remove_empty_line(pyperclip.paste(), args.split)
+            cache = content
+            pyperclip.copy(content)
+            print("clipboard content INFO    ",content[:7],"  ......  ",content[-7:])
 
 if __name__ == '__main__':
     main()
