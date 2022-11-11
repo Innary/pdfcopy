@@ -4,7 +4,7 @@
 @ Author: Innary
 @ Date: 2022-11-11 11:29:23
 @ LastEditors: Innary
-@ LastEditTime: 2022-11-11 14:54:25
+@ LastEditTime: 2022-11-11 14:56:37
 '''
 
 import argparse
@@ -18,9 +18,9 @@ def get_args_parser():
     return parser
 def remove_empty_line(text, type=None):
     if type == 'r':
-        source_content = text.replace('\r',' ')
+        source_content = text.replace('\r',' ').replace(' ', ' ')
     elif type =='n':
-        source_content = text.replace('\n',' ')
+        source_content = text.replace('\n',' ').replace(' ', ' ')
     else:
         source_content = text.replace('\n',' ').replace('\r', ' ').replace('  ', ' ')
     return source_content
